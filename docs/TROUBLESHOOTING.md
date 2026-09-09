@@ -9,7 +9,7 @@ Each entry: symptom → likely cause → fix → alternative.
 - Fix: test on physical devices via Expo Go; ignore the web error.
 - Alternative: none — web is not a supported target for this project.
 
-## Empty list / "Não foi possível carregar" / timeout
+## Empty list / timeout / failed to load
 
 - Cause: API down, wrong LAN IP in `apps/mobile/.env`, or phone on a different network.
 - Fix: on the **phone's browser**, open `http://<LAN_IP>:3333/categories`. If it fails, fix network first. Then restart Metro with `--clear` (env is baked at start).
@@ -24,10 +24,17 @@ Each entry: symptom → likely cause → fix → alternative.
 
 ## Gray / blank map in Expo Go
 
+- Cause (config, fixed Sep 2026): `app.json` hardcoded `"apiKey": "$EXPO_PUBLIC_GOOGLE_MAPS_KEY"` with the var unset → empty-string key overrode Expo Go's own key and Google rejected the tiles (native controls still rendered). Fixed by moving to `app.config.js`, which only injects the key when the env var is set.
 - Cause (device): emulator without Play Services, or no network/GPS.
-- Fix: test on a **physical device** with network + location on; allow location permission.
-- Alternative: `npx expo start --clear`, reinstall Expo Go (SDK 52). If still gray only on emulator, ignore — record physical-device result.
+- Fix: test on a **physical device** with network + location on; allow precise location permission.
+- Alternative: set `EXPO_PUBLIC_GOOGLE_MAPS_KEY` (dev-client/standalone only) and restart Metro with `--clear`. If still gray only on emulator, ignore — record physical-device result.
 - ⚠️ Warning: do **not** chase this with a Google Maps key in Expo Go — Go ignores custom keys. Keys matter only for dev-client/standalone builds.
+
+## Location never centers / fallback São Paulo persists
+
+- Cause: permission denied (or "approximate" only), GPS without fix (indoors), or old build without camera animation.
+- Fix: the app now shows a status line under the categories ("Locating you…" / "Location unavailable — showing São Paulo as fallback") plus an alert when permission is denied. Grant **precise** location in OS settings, go outdoors briefly, reload.
+- Alternative: `Location.getLastKnownPositionAsync` fast path covers most cases; a cold GPS fix can take 30–60s.
 
 ## `Something went wrong / version mismatch`
 

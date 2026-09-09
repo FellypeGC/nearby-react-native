@@ -27,15 +27,15 @@ export function Details({data}: Props) {
       <Text style={s.description}>{data.description}</Text>
 
       <View style={s.group}>
-        <Text style={s.title}>Informações</Text>
+        <Text style={s.title}>Information</Text>
 
-        <Info icon={IconTicket} description={`${data.coupouns} disponíveis`} />
+        <Info icon={IconTicket} description={`${data.coupouns} available`} />
         <Info icon={IconMapPin} description={data.address} />
         <Info icon={IconPhone} description={data.phone} />
       </View>
 
       <View style={s.group}>
-        <Text style={s.title}>Regulamento</Text>
+        <Text style={s.title}>Terms</Text>
         {
           data.rules.map((item) =>
             (

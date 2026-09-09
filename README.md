@@ -40,9 +40,9 @@ Open Expo Go (SDK 57) and scan the QR, or enter `exp://<YOUR_LAN_IP>:8081` manua
 
 ## Known issues
 
-- Google Maps key (`EXPO_PUBLIC_GOOGLE_MAPS_KEY`) is only needed for standalone/dev-client builds; Expo Go uses its own key.
-- iOS Expo Go renders Apple Maps (ignores `PROVIDER_GOOGLE`) — expected.
-- App UI strings are in PT-BR (Brazilian study product); a full i18n pass is a known follow-up.
+- Google Maps key (`EXPO_PUBLIC_GOOGLE_MAPS_KEY`) is only needed for standalone/dev-client builds; Expo Go uses its own key (`app.config.js` omits the field when unset — an empty key used to break tiles, fixed Sep 2026).
+- iOS renders Apple Maps (Google provider is Android-only) — expected; iOS verified by code review, Android is the tested device.
+- App language is English-only (UI strings + API seed translated September 2026).
 
 ## SDK upgrade 52 → 57
 
@@ -63,7 +63,7 @@ Projeto de estudo (Rocketseat NLW Pocket Mobile) refatorado com foco em vaga Rea
 ## Estrutura
 
 ```
-apps/mobile/  -> Expo Router + React Native (SDK 52), mapa + fluxo de cupom com câmera
+apps/mobile/  -> Expo Router + React Native (SDK 57), mapa + fluxo de cupom com câmera
 apps/api/     -> Express + Prisma + SQLite, categorias / mercados / cupons
 docs/         -> SETUP, TESTING-EXPO-GO, TROUBLESHOOTING (em inglês)
 ```

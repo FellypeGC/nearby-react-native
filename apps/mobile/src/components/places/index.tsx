@@ -35,7 +35,7 @@ export function Places({ data }: Props) {
         onPress={() => router.navigate(`/market/${item.id}`)} />}
         contentContainerStyle={s.content}
         ListHeaderComponent={() => (
-          <Text style={s.title}>Explore locais perto de você</Text>
+          <Text style={s.title}>Explore places near you</Text>
         )}
         showsVerticalScrollIndicator={false} 
       />

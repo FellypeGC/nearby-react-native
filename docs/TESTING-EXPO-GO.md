@@ -13,7 +13,7 @@
 
 | # | Step | Expected |
 |---|------|----------|
-| 1 | Onboarding → tap Começar | Home with 5 categories |
+| 1 | Onboarding → tap Get started | Home with 5 categories (English) |
 | 2 | Allow location | Map centers near you (fallback: São Paulo) |
 | 3 | Switch category | Bottom-sheet list + pins update (22 markets total) |
 | 4 | Tap pin → callout → open | Detail with cover, 2 rules, coupon count |
@@ -24,5 +24,6 @@ Record per device: cold-start map time, any gray/blank map, scan success. These 
 
 ## Notes
 
-- Google Maps API key (`EXPO_PUBLIC_GOOGLE_MAPS_KEY`) is **not required** for this Expo Go test — Go uses its own key. It is only needed for standalone/dev-client builds.
-- iOS Expo Go ignores `PROVIDER_GOOGLE` and renders Apple Maps — expected, not a bug.
+- Google Maps API key (`EXPO_PUBLIC_GOOGLE_MAPS_KEY`) is **not required** for this Expo Go test — Go uses its own key (`app.config.js` omits the field when unset; it is only injected for standalone/dev-client builds).
+- iOS Expo Go renders Apple Maps (the app selects `PROVIDER_GOOGLE` on Android only) — expected, not a bug. iOS is verified by code review (bundle id, permissions, location plugin) as no iOS device is available; Android is the primary test device.
+- App language is English-only (UI strings + seed data translated September 2026).

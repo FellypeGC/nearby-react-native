@@ -34,9 +34,9 @@ export default function Market() {
       setIsLoading(false);
     } catch (error) {
       console.error(error);
-      Alert.alert('Erro', 'Não foi possível carregar os dados', [
+      Alert.alert('Error', 'Could not load the data', [
         { 
-          text: 'Ok', 
+          text: 'OK', 
           onPress: () => router.back(),
         },
       ]);
@@ -47,13 +47,13 @@ export default function Market() {
     try {
       const { granted } = await requestPermission();
       if (!granted) {
-        return Alert.alert('Câmera', 'Você precisa habilitar o uso da câmera');
+        return Alert.alert('Camera', 'You need to enable camera access');
       }
       qrLock.current = false;
       setIsVisibleCameraModal(true);
     } catch (error) {
       console.error(error);
-      Alert.alert('Câmera', 'Não foi possível utilizar a câmera')
+      Alert.alert('Camera', 'Could not use the camera')
     }
   }
 
@@ -63,11 +63,11 @@ export default function Market() {
 
       const { data } = await api.patch(`/coupons/${id}`);
 
-      Alert.alert('Cupom', data.coupon);
+      Alert.alert('Coupon', data.coupon);
       setCoupon(data.coupon)
     } catch (error) {
       console.error(error);
-      Alert.alert('Erro', 'Não foi possível utilizar o cupom')
+      Alert.alert('Error', 'Could not redeem the coupon')
     } finally { 
       setCouponIsFetching(false);
     }
@@ -77,10 +77,10 @@ export default function Market() {
     setIsVisibleCameraModal(false);
 
     Alert.alert(
-      'Cupom', 'Não é possível reutilizar um cupom resgatado. Deseja realmente resgatar o cupom?', 
+      'Coupon', 'A redeemed coupon cannot be reused. Do you really want to redeem it?', 
       [
-        { style: 'cancel', text: 'Não' },
-        { text: 'Sim', onPress: () => getCoupon(id) },
+        { style: 'cancel', text: 'No' },
+        { text: 'Yes', onPress: () => getCoupon(id) },
       ]
     )
   }
@@ -128,7 +128,7 @@ export default function Market() {
 
         <View style={{ position: 'absolute', bottom: 32, left: 32, right: 32 }}>
           <Button onPress={() => setIsVisibleCameraModal(false)} isLoading={couponIsFetching}>
-            <Button.Title>Voltar</Button.Title>
+            <Button.Title>Back</Button.Title>
           </Button>
         </View>
       </Modal>

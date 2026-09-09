@@ -7,10 +7,10 @@ export function Welcome() {
     <View>
       <Image source={require('@/src/assets/logo.png')} style={s.logo} />
 
-      <Text style={s.title}>Boas vindas ao Nearby</Text>
+      <Text style={s.title}>Welcome to Nearby</Text>
       <Text style={s.subtitle}>
-        Tenha cupons de vantagem para usar em {'\n'} 
-        seus estabelecimentos favoritos.
+        Get discount coupons to use at {'\n'} 
+        your favorite places.
       </Text>
     </View>
   )

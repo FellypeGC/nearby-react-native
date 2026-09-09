@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { View, Alert, Text } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { View, Alert, Text, Platform } from "react-native";
 
 import { api } from "../services/api";
 import { fontFamily, colors } from '@/src/styles/theme';
@@ -28,6 +28,16 @@ export default function Home() {
   const [category, setCategory] = useState('');
   const [markets, setMarkets] = useState<MarketsProps[]>([])
   const [currentLocation, setCurrentLocation] = useState(fallbackLocation);
+  const [locationStatus, setLocationStatus] = useState<'loading' | 'ok' | 'denied' | 'error'>('loading');
+  const mapRef = useRef<MapView>(null);
+
+  // Google provider on Android; Apple Maps on iOS (no key needed in Expo Go).
+  const mapProvider = Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined;
+
+  function moveCamera(latitude: number, longitude: number) {
+    setCurrentLocation({ latitude, longitude });
+    mapRef.current?.animateCamera({ center: { latitude, longitude }, zoom: 15 }, { duration: 800 });
+  }
 
   async function fetchCategories() {
     try {
@@ -36,7 +46,7 @@ export default function Home() {
       setCategory(data[0].id);
     } catch (error) {
       console.error(error);
-      Alert.alert('Categorias', 'Não foi possível carregar as categorias.');
+      Alert.alert('Categories', 'Could not load the categories.');
     }
   }
 
@@ -50,7 +60,7 @@ export default function Home() {
       setMarkets(data);
     } catch (error) {
       console.error(error);
-      Alert.alert('Locais', 'Não foi possível carregar os locais.');
+      Alert.alert('Places', 'Could not load the places.');
     }
   }
 
@@ -58,15 +68,30 @@ export default function Home() {
     try {
       const { granted } = await Location.requestForegroundPermissionsAsync();
 
-      if (granted) {
-        const location = await Location.getCurrentPositionAsync();
-        setCurrentLocation({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        });
+      if (!granted) {
+        setLocationStatus('denied');
+        Alert.alert(
+          'Location',
+          'Allow precise location access to see coupons near you. Showing São Paulo as fallback.'
+        );
+        return;
       }
+
+      // Fast path: last known fix renders instantly, GPS refines right after.
+      const lastKnown = await Location.getLastKnownPositionAsync();
+      if (lastKnown) {
+        moveCamera(lastKnown.coords.latitude, lastKnown.coords.longitude);
+        setLocationStatus('ok');
+      }
+
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+      });
+      moveCamera(location.coords.latitude, location.coords.longitude);
+      setLocationStatus('ok');
     } catch (error) {
       console.error(error);
+      setLocationStatus('error');
     }
   }
 
@@ -87,11 +112,40 @@ export default function Home() {
         selected={category}
       />
 
+      {locationStatus !== 'ok' && (
+        <Text style={{
+          fontSize: 12,
+          color: colors.gray[600],
+          fontFamily: fontFamily.regular,
+          textAlign: 'center',
+          paddingVertical: 4,
+        }}>
+          {locationStatus === 'loading'
+            ? 'Locating you…'
+            : 'Location unavailable — showing São Paulo as fallback.'}
+        </Text>
+      )}
+
       <MapView
+        ref={mapRef}
         style={{ flex: 1 }}
-        provider={PROVIDER_GOOGLE}
+        provider={mapProvider}
         showsUserLocation
+        showsMyLocationButton
         loadingEnabled
+        onMapReady={() => {
+          // Re-center in case the GPS fix arrived before the map was ready.
+          mapRef.current?.animateCamera(
+            {
+              center: {
+                latitude: currentLocation.latitude,
+                longitude: currentLocation.longitude,
+              },
+              zoom: 15,
+            },
+            { duration: 500 }
+          );
+        }}
         initialRegion={
           {
             latitude: currentLocation.latitude,

@@ -11,7 +11,7 @@ type Props = {
 export function Coupon({ code }: Props) {
   return (
     <View style={s.container}> 
-      <Text style={s.title}>Utilize esse cupom</Text>
+      <Text style={s.title}>Use this coupon</Text>
 
       <View>
         <IconTicket size={24} color={colors.green.light} />

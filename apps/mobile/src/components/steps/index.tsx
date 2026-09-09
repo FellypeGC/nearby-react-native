@@ -7,22 +7,22 @@ import { Step } from '../step'
 export function Steps() {
   return (
     <View style={s.container}>
-      <Text style={s.title}>Veja como funciona:</Text>
+      <Text style={s.title}>See how it works:</Text>
 
       <Step 
         icon={IconMapPin}
-        title='Encontre estabelecimentos'
-        description='Veja locais perto de você que são parceiros Nearby'
+        title='Find places'
+        description='See nearby places that partner with Nearby'
       />
       <Step 
         icon={IconQrcode}
-        title='Ative o cupom com QR Code'
-        description='Escaneie o código no estabelecimento para usar o benefício'
+        title='Activate coupons with QR Code'
+        description='Scan the code at the place to redeem the benefit'
       />
       <Step 
         icon={IconTicket}
-        title='Garanta vantagens perto de você'
-        description='Ative cupons onde estiver, em diferentes tipos de estabelecimento'
+        title='Get perks near you'
+        description='Activate coupons wherever you are, across different kinds of places'
       />
     </View>
   )

@@ -28,7 +28,7 @@ export function Place({ data, ...rest }: Props) {
 
         <View style={s.footer}>
           <IconTicket size={16} color={colors.red.base} />
-          <Text style={s.tickets}>{data.coupons} cupons disponíveis</Text>
+          <Text style={s.tickets}>{data.coupons} coupons available</Text>
         </View>
       </View>
     </TouchableOpacity>
