@@ -24,7 +24,20 @@ const PAD = 24;
 // (user GPS + API markets) with a linear projection. Production path: MapLibre
 // + dev-client build with our own key. See README "Maps" section.
 export function SimulatedMap({ user, points, selectedId, onSelectPoint }: Props) {
-  const all = [user, ...points];
+  // If the user is far from every market (e.g. another city), framing on the
+  // user would squash all pins into an unreadable cluster — frame the markets
+  // instead and hide the off-screen user dot.
+  const distToFirst =
+    points.length > 0
+      ? Math.hypot(
+          user.latitude - points[0].latitude,
+          user.longitude - points[0].longitude
+        )
+      : 0;
+  const FAR_DEG = 0.5; // ~55km: beyond this the user is "away"
+  const includeUser = distToFirst <= FAR_DEG;
+
+  const all = includeUser ? [user, ...points] : points;
   const lats = all.map((p) => p.latitude);
   const lngs = all.map((p) => p.longitude);
   const minLat = Math.min(...lats);
@@ -42,6 +55,7 @@ export function SimulatedMap({ user, points, selectedId, onSelectPoint }: Props)
   });
 
   const u = project(user.latitude, user.longitude);
+  const showUserDot = includeUser;
 
   // Decorative street grid (static, relative to the box).
   const grid: number[] = [60, 120, 180, 240, 300, 340];
@@ -109,16 +123,20 @@ export function SimulatedMap({ user, points, selectedId, onSelectPoint }: Props)
         );
       })}
 
-      {/* User location */}
-      <Circle cx={u.x} cy={u.y} r={14} fill="#1E88E5" opacity={0.25} />
-      <Circle
-        cx={u.x}
-        cy={u.y}
-        r={7}
-        fill="#1E88E5"
-        stroke="#FFFFFF"
-        strokeWidth={3}
-      />
+      {/* User location (hidden when framed out as "away") */}
+      {showUserDot && (
+        <G>
+          <Circle cx={u.x} cy={u.y} r={14} fill="#1E88E5" opacity={0.25} />
+          <Circle
+            cx={u.x}
+            cy={u.y}
+            r={7}
+            fill="#1E88E5"
+            stroke="#FFFFFF"
+            strokeWidth={3}
+          />
+        </G>
+      )}
     </Svg>
   );
 }

@@ -9,7 +9,7 @@ export type PropsDetails = {
   description: string
   address: string
   phone: string 
-  coupouns: number 
+  coupons: number 
   rules: { 
     id: string 
     description: string
@@ -29,7 +29,7 @@ export function Details({data}: Props) {
       <View style={s.group}>
         <Text style={s.title}>Information</Text>
 
-        <Info icon={IconTicket} description={`${data.coupouns} available`} />
+        <Info icon={IconTicket} description={`${data.coupons} available`} />
         <Info icon={IconMapPin} description={data.address} />
         <Info icon={IconPhone} description={data.phone} />
       </View>
