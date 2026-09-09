@@ -6,6 +6,13 @@ Study project (Rocketseat NLW Pocket Mobile) refactored toward a React Native ro
 
 > History: originally built in December 2024 on Expo SDK 52; refactored in September 2026 and upgraded to Expo SDK 57 (see [Why the SDK upgrade](#sdk-upgrade-52--57) below).
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/home.png" width="300" alt="Home — stylized map with pins, categories and nearby places" />
+  <br /><em>Home: stylized map with numbered pins, category filter and bottom-sheet list (real device).</em>
+</p>
+
 ## Structure
 
 ```
