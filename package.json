@@ -1,0 +1,15 @@
+{
+  "name": "nearby-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "install:all": "npm --prefix apps/api install && npm --prefix apps/mobile install",
+    "dev:api": "npm --prefix apps/api start",
+    "dev:mobile": "npm --prefix apps/mobile start",
+    "android": "npm --prefix apps/mobile run android",
+    "ios": "npm --prefix apps/mobile run ios"
+  }
+}

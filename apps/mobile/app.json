@@ -1,0 +1,61 @@
+{
+  "expo": {
+    "name": "nearby",
+    "slug": "nearby",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#257F49"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.nearby.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Precisamos da sua localização para mostrar cupons perto de você.",
+        "NSCameraUsageDescription": "Precisamos da câmera para ler o QR Code do cupom."
+      },
+      "config": {
+        "googleMapsApiKey": "$EXPO_PUBLIC_GOOGLE_MAPS_KEY"
+      }
+    },
+    "android": {
+      "package": "com.nearby.app",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION", "CAMERA"],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "$EXPO_PUBLIC_GOOGLE_MAPS_KEY"
+        }
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Permitir que o Nearby use sua localização para mostrar cupons próximos."
+        }
+      ],
+      "expo-camera",
+      "react-native-maps"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
