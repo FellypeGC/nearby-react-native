@@ -14,9 +14,9 @@
 | # | Step | Expected |
 |---|------|----------|
 | 1 | Onboarding → tap Get started | Home with 5 categories (English) |
-| 2 | Allow location | Map centers near you (fallback: São Paulo) |
-| 3 | Switch category | Bottom-sheet list + pins update (22 markets total) |
-| 4 | Tap pin → callout → open | Detail with cover, 2 rules, coupon count |
+| 2 | Allow location | Stylized map shows user dot (fallback: São Paulo) |
+| 3 | Switch category | Bottom-sheet list + numbered pins update (22 markets total) |
+| 4 | Tap pin → open | Detail with cover, 2 rules, coupon count |
 | 5 | Tap QR Code → allow camera → scan market QR | Confirm dialog → coupon code shown |
 | 6 | Back → tap list row | Same detail opens (row `onPress` wired) |
 
@@ -24,6 +24,6 @@ Record per device: cold-start map time, any gray/blank map, scan success. These 
 
 ## Notes
 
-- Google Maps API key (`EXPO_PUBLIC_GOOGLE_MAPS_KEY`) is **not required** for this Expo Go test — Go uses its own key (`app.config.js` omits the field when unset; it is only injected for standalone/dev-client builds).
-- iOS Expo Go renders Apple Maps (the app selects `PROVIDER_GOOGLE` on Android only) — expected, not a bug. iOS is verified by code review (bundle id, permissions, location plugin) as no iOS device is available; Android is the primary test device.
+- The home "map" is a **stylized SVG preview** (`src/components/simulated-map/`), not live tiles — the Google key inside Expo Go is expired upstream, so native tiles can't render. Pins plot real API coordinates and open the real detail flow.
+- iOS is verified by code review (bundle id, permissions, location plugin) as no iOS device is available; Android is the primary test device.
 - App language is English-only (UI strings + seed data translated September 2026).

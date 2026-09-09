@@ -22,13 +22,12 @@ Each entry: symptom → likely cause → fix → alternative.
 - Fix: keep both on the same Wi-Fi (recommended).
 - Alternative: expose the API too (e.g. `ngrok http 3333`) and point `EXPO_PUBLIC_API_URL` at the public URL — dev only, never commit it.
 
-## Gray / blank map in Expo Go
+## Gray / blank native map in Expo Go (root cause found, workaround shipped)
 
-- Cause (config, fixed Sep 2026): `app.json` hardcoded `"apiKey": "$EXPO_PUBLIC_GOOGLE_MAPS_KEY"` with the var unset → empty-string key overrode Expo Go's own key and Google rejected the tiles (native controls still rendered). Fixed by moving to `app.config.js`, which only injects the key when the env var is set.
-- Cause (device): emulator without Play Services, or no network/GPS.
-- Fix: test on a **physical device** with network + location on; allow precise location permission.
-- Alternative: set `EXPO_PUBLIC_GOOGLE_MAPS_KEY` (dev-client/standalone only) and restart Metro with `--clear`. If still gray only on emulator, ignore — record physical-device result.
-- ⚠️ Warning: do **not** chase this with a Google Maps key in Expo Go — Go ignores custom keys. Keys matter only for dev-client/standalone builds.
+- Cause (upstream, verified Aug 2026): the Google Maps API key **bundled inside Expo Go Android (SDK 55/56/57)** is expired server-side (`REQUEST_DENIED: The provided API key is expired`). The map mounts (controls render) but no tiles ever load. No `app.json`/`app.config.js` setting can fix it — Go uses Expo's key, not yours. OSM `UrlTile` overlays were also tried and render nothing on the dead surface.
+- Fix (shipped): `src/components/simulated-map/` — stylized SVG preview plotting real GPS + API coordinates with tappable pins into the same detail flow. Deterministic, zero keys, zero cost.
+- Alternative (production-grade, needs budget-free EAS account + build time): migrate to MapLibre + dev-client build with your own tile source; or set `EXPO_PUBLIC_GOOGLE_MAPS_KEY` (requires paid Google billing) for dev-client/standalone only.
+- ⚠️ Warning: do **not** chase this with a Google Maps key in Expo Go — Go ignores custom keys.
 
 ## Location never centers / fallback São Paulo persists
 

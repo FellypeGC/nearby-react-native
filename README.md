@@ -40,8 +40,8 @@ Open Expo Go (SDK 57) and scan the QR, or enter `exp://<YOUR_LAN_IP>:8081` manua
 
 ## Known issues
 
-- Google Maps key (`EXPO_PUBLIC_GOOGLE_MAPS_KEY`) is only needed for standalone/dev-client builds; Expo Go uses its own key (`app.config.js` omits the field when unset — an empty key used to break tiles, fixed Sep 2026).
-- iOS renders Apple Maps (Google provider is Android-only) — expected; iOS verified by code review, Android is the tested device.
+- **Maps are a stylized SVG preview** (`src/components/simulated-map/`), not live tiles: the Google Maps key bundled in Expo Go Android (SDK 55–57) is expired server-side (verified Aug 2026), so native tiles can't authenticate and there is no budget for a private key. The preview plots REAL data (user GPS + all 22 API markets) with tappable pins into the same detail flow. Production path: MapLibre + dev-client build with our own key.
+- iOS renders Apple Maps natively when a dev-client is used (no key needed) — expected; iOS verified by code review, Android is the tested device.
 - App language is English-only (UI strings + API seed translated September 2026).
 
 ## SDK upgrade 52 → 57
