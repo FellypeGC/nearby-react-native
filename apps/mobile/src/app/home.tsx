@@ -8,7 +8,7 @@ import { PlaceProps } from "../components/place";
 import { Places } from "../components/places";
 import { Categories, CategoriesProps } from "../components/categories";
 
-import MapView, { Callout, Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Callout, Marker, PROVIDER_GOOGLE, UrlTile } from "react-native-maps";
 import * as Location from 'expo-location';
 
 import { router } from 'expo-router';
@@ -144,6 +144,10 @@ export default function Home() {
         ref={mapRef}
         style={{ flex: 1 }}
         provider={mapProvider}
+        // Free OpenStreetMap tiles: Expo Go's bundled Google key is expired,
+        // so the Google base map can't authenticate. Base 'none' + OSM overlay
+        // needs no key (demo use complies with OSM tile policy + attribution).
+        mapType="none"
         showsUserLocation
         showsMyLocationButton
         loadingEnabled
@@ -169,6 +173,11 @@ export default function Home() {
           }
         }
       >
+        <UrlTile
+          urlTemplate="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+          maximumZ={19}
+          flipY={false}
+        />
         <Marker
           identifier="current"
           coordinate={{
@@ -211,7 +220,18 @@ export default function Home() {
             </Marker>
           ))
         }
-     </MapView>
+      </MapView>
+
+      <Text style={{
+        fontSize: 10,
+        color: colors.gray[500],
+        fontFamily: fontFamily.regular,
+        textAlign: 'right',
+        paddingHorizontal: 8,
+        paddingVertical: 2,
+      }}>
+        © OpenStreetMap contributors
+      </Text>
 
       <Places data={markets} />
     </View>
