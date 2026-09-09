@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { View, Alert, Text, Platform } from "react-native";
+import { useEffect, useState } from "react";
+import { View, Alert, Text } from "react-native";
 
 import { api } from "../services/api";
 import { fontFamily, colors } from '@/src/styles/theme';
@@ -7,8 +7,8 @@ import { fontFamily, colors } from '@/src/styles/theme';
 import { PlaceProps } from "../components/place";
 import { Places } from "../components/places";
 import { Categories, CategoriesProps } from "../components/categories";
+import { SimulatedMap } from "../components/simulated-map";
 
-import MapView, { Callout, Marker, PROVIDER_GOOGLE, UrlTile } from "react-native-maps";
 import * as Location from 'expo-location';
 
 import { router } from 'expo-router';
@@ -29,14 +29,9 @@ export default function Home() {
   const [markets, setMarkets] = useState<MarketsProps[]>([])
   const [currentLocation, setCurrentLocation] = useState(fallbackLocation);
   const [locationStatus, setLocationStatus] = useState<'loading' | 'ok' | 'denied' | 'error'>('loading');
-  const mapRef = useRef<MapView>(null);
-
-  // Google provider on Android; Apple Maps on iOS (no key needed in Expo Go).
-  const mapProvider = Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined;
 
   function moveCamera(latitude: number, longitude: number) {
     setCurrentLocation({ latitude, longitude });
-    mapRef.current?.animateCamera({ center: { latitude, longitude }, zoom: 15 }, { duration: 800 });
   }
 
   async function fetchCategories() {
@@ -112,20 +107,6 @@ export default function Home() {
         selected={category}
       />
 
-      {/* TEMPORARY diagnostic entry (TODO: remove before demo) */}
-      <Text
-        onPress={() => router.navigate('/map-test' as never)}
-        style={{
-          fontSize: 12,
-          color: colors.green.base,
-          fontFamily: fontFamily.regular,
-          textAlign: 'center',
-          paddingVertical: 4,
-        }}
-      >
-        Open map-test (diagnostic)
-      </Text>
-
       {locationStatus !== 'ok' && (
         <Text style={{
           fontSize: 12,
@@ -140,88 +121,16 @@ export default function Home() {
         </Text>
       )}
 
-      <MapView
-        ref={mapRef}
-        style={{ flex: 1 }}
-        provider={mapProvider}
-        // Free OpenStreetMap tiles: Expo Go's bundled Google key is expired,
-        // so the Google base map can't authenticate. Base 'none' + OSM overlay
-        // needs no key (demo use complies with OSM tile policy + attribution).
-        mapType="none"
-        showsUserLocation
-        showsMyLocationButton
-        loadingEnabled
-        onMapReady={() => {
-          // Re-center in case the GPS fix arrived before the map was ready.
-          mapRef.current?.animateCamera(
-            {
-              center: {
-                latitude: currentLocation.latitude,
-                longitude: currentLocation.longitude,
-              },
-              zoom: 15,
-            },
-            { duration: 500 }
-          );
-        }}
-        initialRegion={
-          {
-            latitude: currentLocation.latitude,
-            longitude: currentLocation.longitude,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01
-          }
-        }
-      >
-        <UrlTile
-          urlTemplate="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-          maximumZ={19}
-          flipY={false}
+      <View style={{ flex: 1 }}>
+        <SimulatedMap
+          user={currentLocation}
+          points={markets}
+          selectedId={category}
+          onSelectPoint={(id) => router.navigate(`/market/${id}`)}
         />
-        <Marker
-          identifier="current"
-          coordinate={{
-            latitude: currentLocation.latitude,
-            longitude: currentLocation.longitude
-          }}
-          image={require('@/src/assets/location.png')}
-        />
+      </View>
 
-        {
-          markets.map((item) => (
-            <Marker
-              key={item.id}
-              identifier={item.id}
-              coordinate={{
-                latitude: item.latitude,
-                longitude: item.longitude
-              }}
-              image={require('@/src/assets/pin.png')}
-            >
-              <Callout onPress={() => router.navigate(`/market/${item.id}`)}>
-                <View>
-                  <Text style={{ 
-                    fontSize: 14, 
-                    color: colors.gray[600], 
-                    fontFamily: fontFamily.medium 
-                  }}>
-                    {item.name}
-                  </Text>
-
-                  <Text style={{ 
-                    fontSize: 14, 
-                    color: colors.gray[600], 
-                    fontFamily: fontFamily.medium 
-                  }}>
-                    {item.address}
-                  </Text>
-                </View>
-              </Callout>
-            </Marker>
-          ))
-        }
-      </MapView>
-
+      {/* Tapping a pin opens the detail; tapping a list row does the same. */}
       <Text style={{
         fontSize: 10,
         color: colors.gray[500],
@@ -230,7 +139,7 @@ export default function Home() {
         paddingHorizontal: 8,
         paddingVertical: 2,
       }}>
-        © OpenStreetMap contributors
+        Stylized preview map • Real coordinates
       </Text>
 
       <Places data={markets} />
