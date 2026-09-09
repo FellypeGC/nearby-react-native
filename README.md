@@ -4,6 +4,8 @@
 
 Study project (Rocketseat NLW Pocket Mobile) refactored toward a React Native role: coupon discovery with native map, category filter, bottom-sheet list, market detail and QR coupon redemption via camera.
 
+> History: originally built in December 2024 on Expo SDK 52; refactored in September 2026 and upgraded to Expo SDK 57 (see [Why the SDK upgrade](#sdk-upgrade-52--57) below).
+
 ## Structure
 
 ```
@@ -14,7 +16,7 @@ docs/         -> SETUP, TESTING-EXPO-GO, TROUBLESHOOTING
 
 ## Quick start
 
-Prerequisites: Node 22, Expo Go (SDK 52) on your phone, PC and phone on the same Wi-Fi.
+Prerequisites: Node 22, Expo Go (SDK 57) on your phone, PC and phone on the same Wi-Fi.
 
 ```bash
 npm install                       # workspaces: installs api + mobile
@@ -26,7 +28,7 @@ npm run dev:api                    # healthcheck: GET http://<YOUR_LAN_IP>:3333/
 ./node_modules/.bin/expo start ./apps/mobile --clear --lan
 ```
 
-Open Expo Go (SDK 52) and scan the QR, or enter `exp://<YOUR_LAN_IP>:8081` manually. Full test script in [`docs/TESTING-EXPO-GO.md`](docs/TESTING-EXPO-GO.md).
+Open Expo Go (SDK 57) and scan the QR, or enter `exp://<YOUR_LAN_IP>:8081` manually. Full test script in [`docs/TESTING-EXPO-GO.md`](docs/TESTING-EXPO-GO.md).
 
 ## Docs
 
@@ -41,13 +43,22 @@ Open Expo Go (SDK 52) and scan the QR, or enter `exp://<YOUR_LAN_IP>:8081` manua
 - Google Maps key (`EXPO_PUBLIC_GOOGLE_MAPS_KEY`) is only needed for standalone/dev-client builds; Expo Go uses its own key.
 - iOS Expo Go renders Apple Maps (ignores `PROVIDER_GOOGLE`) — expected.
 - App UI strings are in PT-BR (Brazilian study product); a full i18n pass is a known follow-up.
-- `tsc --noEmit` reports 9 pre-existing `@tabler/icons-react-native` declaration errors, unrelated to the app logic.
+
+## SDK upgrade 52 → 57
+
+Previous version: Expo SDK 52 (React Native 0.76.5, React 18, expo-router v4) — the stack from the original December 2024 bootcamp project.
+
+Why it was upgraded (September 2026): Expo Go is version-locked — it only runs projects matching its own SDK. The test devices run Expo Go for SDK 57, which refuses to open an SDK 52 bundle (`version mismatch`). Upgrading the project (React Native 0.86, React 19, expo-router v6 line ~57.0.x) was chosen over sideloading an old Go build because sideloading only works on Android (iOS App Store ships the latest Go only) and an up-to-date SDK reads better for hiring.
+
+What changed: `expo`, `expo-router`, `expo-camera`, `expo-location`, `expo-font`, `expo-linking`, `expo-splash-screen`, `expo-status-bar`, `expo-system-ui`, `expo-web-browser` to their `~57` lines, `react-native-maps` 1.18 → 1.27, `react-native-reanimated` 3 → 4, React 18 → 19, missing config plugins (`expo-splash-screen`, `expo-status-bar`, `expo-web-browser`) registered in `app.json`. No app code changes were needed — `tsc --noEmit` passes with zero errors.
 
 ---
 
 ## Português
 
 Projeto de estudo (Rocketseat NLW Pocket Mobile) refatorado com foco em vaga React Native: descoberta de cupons com mapa nativo, filtro por categoria, lista em bottom-sheet, detalhe do estabelecimento e resgate de cupom via QR Code na câmera.
+
+> Histórico: construído originalmente em dezembro de 2024 com Expo SDK 52; refatorado em setembro de 2026 com upgrade para Expo SDK 57 (ver [seção de upgrade](#sdk-upgrade-52--57) acima — motivo: Expo Go version-locked).
 
 ## Estrutura
 
@@ -59,7 +70,7 @@ docs/         -> SETUP, TESTING-EXPO-GO, TROUBLESHOOTING (em inglês)
 
 ## Início rápido
 
-Pré-requisitos: Node 22, Expo Go (SDK 52) no celular, PC e celular na mesma Wi-Fi.
+Pré-requisitos: Node 22, Expo Go (SDK 57) no celular, PC e celular na mesma Wi-Fi.
 
 ```bash
 npm install                       # workspaces: instala api + mobile
@@ -71,4 +82,4 @@ npm run dev:api                    # healthcheck: GET http://<SEU_IP_LAN>:3333/c
 ./node_modules/.bin/expo start ./apps/mobile --clear --lan
 ```
 
-Abra o Expo Go (SDK 52) e escaneie o QR, ou digite `exp://<SEU_IP_LAN>:8081` manualmente. Roteiro completo em [`docs/TESTING-EXPO-GO.md`](docs/TESTING-EXPO-GO.md) e erros comuns em [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md).
+Abra o Expo Go (SDK 57) e escaneie o QR, ou digite `exp://<SEU_IP_LAN>:8081` manualmente. Roteiro completo em [`docs/TESTING-EXPO-GO.md`](docs/TESTING-EXPO-GO.md) e erros comuns em [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md).

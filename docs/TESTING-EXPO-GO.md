@@ -4,9 +4,9 @@
 
 1. Start the API first (`npm run dev:api`), confirm `GET http://<LAN_IP>:3333/categories` works from the PC browser.
 2. Start Metro: `npx --prefix apps/mobile expo start --clear` (LAN mode by default).
-3. Open **Expo Go (SDK 52)** on each phone (same Wi-Fi) and scan the QR from the terminal.
+3. Open **Expo Go (SDK 57)** on each phone (same Wi-Fi) and scan the QR from the terminal.
 
-> ⚠️ Warning: Expo Go must match SDK 52. A wrong Go version shows `Something went wrong / version mismatch`.
+> ⚠️ Warning: Expo Go must match the project's SDK (57 — upgraded from 52 in September 2026, see README history). A wrong Go version shows `Something went wrong / version mismatch`.
 > Alternative: install the matching Go from the store, or use a dev-client build (out of scope here).
 
 ## Test script (~5 min per device)

@@ -1,13 +1,13 @@
 # Setup
 
-Monorepo: `apps/mobile` (Expo Router + React Native, SDK 52) + `apps/api` (Express + Prisma + SQLite).
+Monorepo: `apps/mobile` (Expo Router + React Native, SDK 57) + `apps/api` (Express + Prisma + SQLite).
 
 > Only `.env.example` files are versioned. Real `.env` files, `*.db`, `.career/` and `node_modules/` are gitignored and never pushed.
 
 ## Prerequisites
 
 - Node 22, npm 10
-- Phone(s) with **Expo Go for SDK 52** installed (Android and/or iOS)
+- Phone(s) with **Expo Go for SDK 57** installed (Android and/or iOS)
 - PC and phone(s) on the **same Wi-Fi/LAN**
 
 ## 1. API

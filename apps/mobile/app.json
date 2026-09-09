@@ -26,7 +26,11 @@
     },
     "android": {
       "package": "com.nearby.app",
-      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION", "CAMERA"],
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "CAMERA"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -51,7 +55,10 @@
           "locationAlwaysAndWhenInUsePermission": "Permitir que o Nearby use sua localização para mostrar cupons próximos."
         }
       ],
-      "expo-camera"
+      "expo-camera",
+      "expo-splash-screen",
+      "expo-status-bar",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

@@ -31,8 +31,8 @@ Each entry: symptom → likely cause → fix → alternative.
 
 ## `Something went wrong / version mismatch`
 
-- Cause: Expo Go version ≠ SDK 52.
-- Fix: install the Go build matching `"expo": "^52.0.18"`.
+- Cause: Expo Go version ≠ project SDK (project is SDK 57 since the September 2026 upgrade from 52).
+- Fix: install the Go build matching `"expo": "^57.0.21"`.
 - Alternative: `npx expo upgrade` the project (bigger change — do on a branch).
 
 ## Metro cache / stale bundle
