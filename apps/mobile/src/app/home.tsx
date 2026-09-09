@@ -112,6 +112,20 @@ export default function Home() {
         selected={category}
       />
 
+      {/* TEMPORARY diagnostic entry (TODO: remove before demo) */}
+      <Text
+        onPress={() => router.navigate('/map-test' as never)}
+        style={{
+          fontSize: 12,
+          color: colors.green.base,
+          fontFamily: fontFamily.regular,
+          textAlign: 'center',
+          paddingVertical: 4,
+        }}
+      >
+        Open map-test (diagnostic)
+      </Text>
+
       {locationStatus !== 'ok' && (
         <Text style={{
           fontSize: 12,
