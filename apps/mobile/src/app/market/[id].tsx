@@ -29,7 +29,7 @@ export default function Market() {
 
   async function fetchMarket() {
     try {
-      const { data } = await api.get(`/market/${params.id}`);
+      const { data } = await api.get(`/markets/${params.id}`);
       setData(data)
       setIsLoading(false);
     } catch (error) {
