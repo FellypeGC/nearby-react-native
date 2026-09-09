@@ -131,15 +131,26 @@ export default function Home() {
       </View>
 
       {/* Tapping a pin opens the detail; tapping a list row does the same. */}
-      <Text style={{
-        fontSize: 10,
-        color: colors.gray[500],
-        fontFamily: fontFamily.regular,
-        textAlign: 'right',
-        paddingHorizontal: 8,
-        paddingVertical: 2,
-      }}>
-        Stylized preview map • Real coordinates
+      <Text
+        onPress={() =>
+          Alert.alert(
+            'About this map',
+            'Original: native Google Maps via react-native-maps.\n\n' +
+              'Why preview: the Google Maps key bundled in Expo Go (SDK 55-57) is expired, so native tiles cannot authenticate, and there is no budget for a private key.\n\n' +
+              'Current: stylized preview plotting real GPS + API coordinates with tappable pins into the same flow.\n\n' +
+              'Production path: MapLibre + dev-client build with our own key.'
+          )
+        }
+        style={{
+          fontSize: 10,
+          color: colors.gray[500],
+          fontFamily: fontFamily.regular,
+          textAlign: 'right',
+          paddingHorizontal: 8,
+          paddingVertical: 2,
+        }}
+      >
+        Stylized preview map • Real coordinates • Why?
       </Text>
 
       <Places data={markets} />

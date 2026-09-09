@@ -9,10 +9,21 @@ Study project (Rocketseat NLW Pocket Mobile) refactored toward a React Native ro
 ## Structure
 
 ```
-apps/mobile/  -> Expo Router + React Native (SDK 52), map + camera coupon flow
+apps/mobile/  -> Expo Router + React Native (SDK 57), map + camera coupon flow
 apps/api/     -> Express + Prisma + SQLite, categories / markets / coupons
 docs/         -> SETUP, TESTING-EXPO-GO, TROUBLESHOOTING
 ```
+
+## Maps: original × current × production
+
+| | Original | Current (this repo) | Production path |
+|---|---|---|---|
+| Tech | Native Google Maps (`react-native-maps`) | Stylized SVG preview (`src/components/simulated-map/`) | MapLibre + dev-client, own key |
+| Tiles | Google (needs key) | Drawn, zero network | Own tile source |
+| Coordinates | Real GPS + API | Real GPS + API (same) | Real GPS + API (same) |
+| Cost | Paid Google billing | Free | Free (EAS free tier + OSM-compatible tiles) |
+
+Why not native tiles here: the Google Maps key bundled in Expo Go Android (SDK 55–57) is expired server-side, so tiles can't authenticate and there is no budget for a private key. The same tap-pin → detail flow runs on the preview, and the in-app “Why?” notice explains it.
 
 ## Quick start
 

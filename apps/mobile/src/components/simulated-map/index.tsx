@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import { G, Circle, Line, Path, Rect, Svg, Text as SvgText } from "react-native-svg";
 
 export type SimPoint = {
@@ -24,6 +26,8 @@ const PAD = 24;
 // (user GPS + API markets) with a linear projection. Production path: MapLibre
 // + dev-client build with our own key. See README "Maps" section.
 export function SimulatedMap({ user, points, selectedId, onSelectPoint }: Props) {
+  const [zoom, setZoom] = useState(1);
+
   // If the user is far from every market (e.g. another city), framing on the
   // user would squash all pins into an unreadable cluster — frame the markets
   // instead and hide the off-screen user dot.
@@ -40,12 +44,16 @@ export function SimulatedMap({ user, points, selectedId, onSelectPoint }: Props)
   const all = includeUser ? [user, ...points] : points;
   const lats = all.map((p) => p.latitude);
   const lngs = all.map((p) => p.longitude);
-  const minLat = Math.min(...lats);
-  const maxLat = Math.max(...lats);
-  const minLng = Math.min(...lngs);
-  const maxLng = Math.max(...lngs);
-  const spanLat = Math.max(maxLat - minLat, 0.0005);
-  const spanLng = Math.max(maxLng - minLng, 0.0005);
+
+  // Zoom around the data center: higher zoom = tighter window.
+  const midLat = (Math.min(...lats) + Math.max(...lats)) / 2;
+  const midLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
+  const fullSpanLat = Math.max(Math.max(...lats) - Math.min(...lats), 0.0005);
+  const fullSpanLng = Math.max(Math.max(...lngs) - Math.min(...lngs), 0.0005);
+  const spanLat = fullSpanLat / zoom;
+  const spanLng = fullSpanLng / zoom;
+  const minLat = midLat - spanLat / 2;
+  const minLng = midLng - spanLng / 2;
 
   const project = (latitude: number, longitude: number) => ({
     // NOTE: y is flipped (north up) and aspect is stretched to fill the box.
@@ -61,13 +69,13 @@ export function SimulatedMap({ user, points, selectedId, onSelectPoint }: Props)
   const grid: number[] = [60, 120, 180, 240, 300, 340];
 
   return (
-    <Svg
-      width="100%"
-      height="100%"
-      viewBox={`0 0 ${W} ${H}`}
-      preserveAspectRatio="xMidYMid slice"
-      testID="simulated-map"
-    >
+    <View style={{ flex: 1 }} testID="simulated-map">
+      <Svg
+        width="100%"
+        height="100%"
+        viewBox={`0 0 ${W} ${H}`}
+        preserveAspectRatio="xMidYMid slice"
+      >
       <Rect x={0} y={0} width={W} height={H} fill="#EDEAE0" />
 
       {grid.map((v) => (
@@ -137,6 +145,40 @@ export function SimulatedMap({ user, points, selectedId, onSelectPoint }: Props)
           />
         </G>
       )}
-    </Svg>
+      </Svg>
+
+      {/* Zoom controls */}
+      <View
+        style={{
+          position: "absolute",
+          right: 12,
+          top: 12,
+          gap: 8,
+        }}
+      >
+        {[
+          { label: "+", next: Math.min(zoom * 1.5, 8) },
+          { label: "−", next: Math.max(zoom / 1.5, 1) },
+        ].map((b) => (
+          <TouchableOpacity
+            key={b.label}
+            onPress={() => setZoom(b.next)}
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              backgroundColor: "#FFFFFF",
+              alignItems: "center",
+              justifyContent: "center",
+              elevation: 3,
+            }}
+          >
+            <Text style={{ fontSize: 22, color: "#257F49", fontWeight: "bold" }}>
+              {b.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
   );
 }
