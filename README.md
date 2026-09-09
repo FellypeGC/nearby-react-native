@@ -10,7 +10,8 @@ Study project (Rocketseat NLW Pocket Mobile) refactored toward a React Native ro
 
 <p align="center">
   <img src="docs/screenshots/home.png" width="300" alt="Home — stylized map with pins, categories and nearby places" />
-  <br /><em>Home: stylized map with numbered pins, category filter and bottom-sheet list (real device).</em>
+  <img src="docs/screenshots/list.png" width="300" alt="Bottom-sheet list of nearby places" />
+  <br /><em>Home: stylized map with numbered pins and category filter. List: nearby places with live coupon counts (real device).</em>
 </p>
 
 ## Structure
