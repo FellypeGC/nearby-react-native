@@ -23,6 +23,10 @@ npm-debug.*
 yarn-debug.*
 yarn-error.*
 
+# local run logs
+expo.log
+api.log
+
 # macOS
 .DS_Store
 *.pem
