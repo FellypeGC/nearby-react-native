@@ -2,6 +2,13 @@
 
 Each entry: symptom → likely cause → fix → alternative.
 
+## Do not test on web (`expo start --web` / pressing `w`)
+
+- Symptom: `Web Bundling failed ... Importing native-only module "react-native/Libraries/Utilities/codegenNativeCommands" on web from react-native-maps`.
+- Cause: `react-native-maps` is native-only and cannot bundle for web. This is expected and does **not** affect Android/iOS.
+- Fix: test on physical devices via Expo Go; ignore the web error.
+- Alternative: none — web is not a supported target for this project.
+
 ## Empty list / "Não foi possível carregar" / timeout
 
 - Cause: API down, wrong LAN IP in `apps/mobile/.env`, or phone on a different network.
