@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { View, Alert, Text } from "react-native";
 
 import { api } from "../services/api";
+import { AnalyticsEvents, track } from "../lib/analytics";
 import { fontFamily, colors } from '@/src/styles/theme';
 
 import { PlaceProps } from "../components/place";
@@ -103,7 +104,10 @@ export default function Home() {
     <View style={{ flex: 1, backgroundColor: '#CECECE' }}>
       <Categories 
         data={categories} 
-        onSelect={setCategory}
+        onSelect={(id) => {
+          setCategory(id);
+          track(AnalyticsEvents.filterSelected, { categoryId: id });
+        }}
         selected={category}
       />
 
@@ -126,7 +130,10 @@ export default function Home() {
           user={currentLocation}
           points={markets}
           selectedId={category}
-          onSelectPoint={(id) => router.navigate(`/market/${id}`)}
+          onSelectPoint={(id) => {
+            track(AnalyticsEvents.marketOpened, { marketId: id });
+            router.navigate(`/market/${id}`);
+          }}
         />
       </View>
 

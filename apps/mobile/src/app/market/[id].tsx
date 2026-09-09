@@ -10,6 +10,7 @@ import { Coupon } from '@/src/components/market/coupon';
 import { PropsDetails, Details } from '@/src/components/market/details';
 
 import { api } from '@/src/services/api'
+import { AnalyticsEvents, track } from '@/src/lib/analytics'
 
 type DataProps = PropsDetails & {
   cover: string
@@ -65,6 +66,7 @@ export default function Market() {
 
       Alert.alert('Coupon', data.coupon);
       setCoupon(data.coupon)
+      track(AnalyticsEvents.couponRedeemed, { marketId: id });
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Could not redeem the coupon')

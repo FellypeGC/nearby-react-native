@@ -56,6 +56,7 @@ Open Expo Go (SDK 57) and scan the QR, or enter `exp://<YOUR_LAN_IP>:8081` manua
 | [`docs/SETUP.md`](docs/SETUP.md) | Detailed install, env, seed, healthcheck |
 | [`docs/TESTING-EXPO-GO.md`](docs/TESTING-EXPO-GO.md) | Android + iOS test script with Expo Go |
 | [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md) | Symptom → cause → fix → alternative for common failures |
+| [`docs/ERD-coupon-redemption.md`](docs/ERD-coupon-redemption.md) | Engineering Requirement Document for the QR coupon flow |
 
 ## Known issues
 
